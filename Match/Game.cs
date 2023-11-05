@@ -11,6 +11,7 @@ namespace BigBattle.Match
         private static Game? m_GameSingleton;
 
         private readonly List<IEquipment> m_AvailableEquipments;
+        private readonly List<IEquipment> m_DroppedEquipments;
         private readonly IEquipment m_DefaultMonsterEquipment;
         private readonly Team[] m_Teams;
         private readonly DateTime m_StartedAt = DateTime.Now;
@@ -31,6 +32,7 @@ namespace BigBattle.Match
             m_Teams = teams;
             m_DefaultMonsterEquipment = new Weapon("Monster Equipment", 1);
             m_GameSingleton = this;
+            m_DroppedEquipments = new();
         }
 
         /// <summary>
@@ -64,6 +66,23 @@ namespace BigBattle.Match
             Console.WriteLine($"Turno {m_CurrentTurn}");
             Console.WriteLine($"Ataca [{attackerTeam}] Recibe [{rivalTeam}]");
 
+            if (m_DroppedEquipments.Count > 0)
+            {
+                var nextDrops = new List<IEquipment>();
+                foreach (var hero in m_Teams.SelectMany(x => x.Members.Where(b => b.IsAlive && b is Hero)))
+                {
+                    var randomDrop = m_DroppedEquipments[m_Random.Next(m_DroppedEquipments.Count)];
+
+                    // drop its equipment first but for the next tick
+                    if (hero.Equipment != null)
+                        nextDrops.Add(hero.Equipment);
+
+                    hero.Equip(randomDrop);
+                }
+
+                m_DroppedEquipments.AddRange(nextDrops);
+            }
+
             foreach (var attacker in attackerTeam.Members.Where(x => x.IsAlive))
             {
                 var aliveRivals = rivalTeam.Members.Where(x => x.IsAlive).ToList();
@@ -76,6 +95,13 @@ namespace BigBattle.Match
                 int damageGiven = rivalHealth - rival.Health;
 
                 Console.WriteLine($"({attacker}) attacks ({rival}) for {damageGiven} damage.");
+
+                // if the rival died, drop its equipment so in the next tick a Hero can pick it up
+                if (!rival.IsAlive && rival.Equipment != null)
+                {
+                    rival.Equip(null); // just to be "safe"
+                    m_DroppedEquipments.Add(rival.Equipment);
+                }
             }
 
 

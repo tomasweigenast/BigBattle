@@ -1,5 +1,5 @@
+using BigBattle.Match;
 using BigBattle.Equipment;
-using static BigBattle.Game.Game;
 
 namespace BigBattle.Character
 {
@@ -13,7 +13,7 @@ namespace BigBattle.Character
         {
             // TODO: equip with a new spell
             // this ensures the wizard will always have an equipment
-            var spell = GameInstance.AvailableEquipments.First(x => x is Spell);
+            var spell = Game.AvailableEquipments.First(x => x is Spell);
             hero.Equip(spell);
         }
 

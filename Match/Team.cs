@@ -1,6 +1,6 @@
 using BigBattle.Character;
 
-namespace BigBattle.Game
+namespace BigBattle.Match
 {
     public class Team
     {
@@ -11,8 +11,14 @@ namespace BigBattle.Game
         /// </summary>
         public string Name { get; }
 
+        /// <summary>
+        /// Indicates if the team is alive.
+        /// </summary>
         public bool IsAlive => m_Members.Any(x => x.IsAlive);
 
+        /// <summary>
+        /// The list of members in the team
+        /// </summary>
         public IReadOnlyCollection<BaseCharacter> Members => m_Members.AsReadOnly();
 
         public Team(string name, List<BaseCharacter> members)

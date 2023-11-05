@@ -1,5 +1,5 @@
 using BigBattle.Equipment;
-using static BigBattle.Constants.Constants;
+using static BigBattle.Game.Game;
 
 namespace BigBattle.Character
 {
@@ -19,7 +19,7 @@ namespace BigBattle.Character
         public override void Equip(IEquipment? equipment)
         {
             if (equipment == null)
-                Equipment = DEFAULT_MONSTER_EQUIPMENT;
+                Equipment = GameInstance.DefaultMonsterEquipment;
         }
 
         public override string ToString() => $"Monster [{Name}] Health [{Health}] Equipment [{Equipment}]";

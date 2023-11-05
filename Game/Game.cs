@@ -31,12 +31,18 @@ namespace BigBattle.Game
                 new Weapon("Arco", 15),
             };
             m_Teams = new Team[2];
+            DefaultMonsterEquipment = new Weapon("Monster Equipment", 1);
         }
 
         /// <summary>
         /// Returns a list of all the available equipments in the game
         /// </summary>
         public IReadOnlyCollection<IEquipment> AvailableEquipments => m_AvailableEquipments.AsReadOnly();
+
+        /// <summary>
+        /// The default equipment of a monster when it does not have any other
+        /// </summary>
+        public IEquipment DefaultMonsterEquipment { get; }
 
         /// <summary>
         /// The list of teams that are currently playing

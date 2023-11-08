@@ -97,7 +97,7 @@ namespace BigBattle.Match
                 Console.WriteLine($"({attacker}) attacks ({rival}) for {damageGiven} damage.");
 
                 // if the rival died, drop its equipment so in the next tick a Hero can pick it up
-                if (!rival.IsAlive && rival.Equipment != null)
+                if (!rival.IsAlive && rival.Equipment != null && rival.Equipment != m_DefaultMonsterEquipment)
                 {
                     rival.Equip(null); // just to be "safe"
                     m_DroppedEquipments.Add(rival.Equipment);
